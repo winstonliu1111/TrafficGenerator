@@ -1,0 +1,10 @@
+FROM ubuntu:bionic-20210416
+
+WORKDIR /
+
+# install packages
+RUN apt-get -y -qq update --fix-missing && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y -qq install \
+         git wget curl build-essential && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

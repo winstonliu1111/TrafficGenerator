@@ -1,3 +1,4 @@
+DOCKER_DEVENV_IMAGE = tg-devenv
 CC = gcc
 CFLAGS = -c -Wall -pthread -lm -lrt
 LDFLAGS = -pthread -lm -lrt
@@ -12,6 +13,7 @@ CLIENT_DIR = src/client
 COMMON_DIR = src/common
 SERVER_DIR = src/server
 SCRIPT_DIR = src/script
+.PHONY: $(DOCKER_DEVENV_IMAGE) dev move
 
 all: $(TARGETS) move
 
@@ -44,3 +46,11 @@ server: $(SERVER_OBJS)
 
 clean:
 	rm -rf $(BIN_DIR)/*
+
+# start a dev docker
+dev:
+	docker run --name=tgenv -it --rm -v $(shell pwd):/TrafficGenerator $(DOCKER_DEVENV_IMAGE) bash
+
+# dependency images
+$(DOCKER_DEVENV_IMAGE):
+	docker build -t $(DOCKER_DEVENV_IMAGE) -f ./Dockerfile.build .
